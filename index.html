@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Spell Bug</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen" title="no title">
+    <style>
+      .error {
+        color: red
+      }
+    </style>
+  </head>
+  <body>
+    <div class="text-center">
+      <h1><b>GDG BBSR<b></h1>
+      <h3>Spell Check</h3>
+    </div>
+    <div class="text-center">
+      <p id="para" ></p>
+    </div>
+      <div class="text-center">
+        <div class="form-group">
+          <input id="user" type="text" name="textbox" value="" style="height:150px;width:550px; font-size:14pt;"/>
+          <div class="text-center">
+            <input type="submit" name="button" value="Submit" id="check-btn"/>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <h2>Add word</h2>
+        <input type="text" id="add-word" />
+        <button id="add-btn">Add</button>
+      </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+      $(() => {
+        let dictionary;
+
+        fetch("dictionary.json").then((response) => {
+          response.json().then((data) => {
+            console.log(data);
+            dictionary = data.commonWords;
+          });
+           //dictionary = d.json().commonWords;
+         });
+
+        $('#check-btn').click(() =>
+        {
+          const text = $("#user");
+          const words = text.val().split(" ");
+          const result = [];
+          for (let word of words) {
+            if (dictionary.indexOf(word.toLowerCase()) == -1) {
+              result.push(`<span class="error">${word}</span> `);
+            } else {
+              result.push(word+' ');
+            }
+          }
+          $('#para').html(result.join(''));
+        });
+
+        $('#add-btn').click(() => {
+          dictionary.push($('#add-word').val().trim().toLowerCase());
+        });
+      });
+    </script>
+  </body>
+</html>
